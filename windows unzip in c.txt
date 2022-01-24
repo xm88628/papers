@@ -1,6 +1,10 @@
 BOOL Unzip2Folder(BSTR lpZipFile, BSTR lpFolder)
 {
 
+
+
+
+
 	IShellDispatch *pISD;
 
 	Folder  *pZippedFile = 0L;
@@ -102,3 +106,9 @@ BOOL Unzip2Folder(BSTR lpZipFile, BSTR lpFolder)
 
 }
 
+Unzip2Folder(SysAllocString(_T("c:\\1.zip")), SysAllocString(_T("c:\\1")));
+
+
+/*CComBSTR file("c:\\filename.zip");
+CComBSTR folder("c:\\folder");
+Unzip2Folder(file, folder);*/
