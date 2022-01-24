@@ -1,0 +1,104 @@
+BOOL Unzip2Folder(BSTR lpZipFile, BSTR lpFolder)
+{
+
+	IShellDispatch *pISD;
+
+	Folder  *pZippedFile = 0L;
+	Folder  *pDestination = 0L;
+
+	HRESULT hr;
+
+	long FilesCount = 0;
+	IDispatch* pItem = 0L;
+	FolderItems *pFilesInside = 0L;
+
+
+	BIND_OPTS3 bop;
+	VARIANT Options, OutFolder, InZipFile, Item;
+
+	
+
+
+	hr = CoInitializeEx(NULL, 2);
+	if (!SUCCEEDED(hr))
+		return hr;
+
+	ZeroMemory(&bop, sizeof(bop));
+	bop.cbStruct = sizeof(bop);
+	bop.dwClassContext = CLSCTX_LOCAL_SERVER;
+	CoCreateInstance(&CLSID_Shell, NULL, CLSCTX_INPROC_SERVER, &IID_IShellDispatch, (void **)&pISD);
+
+
+
+	InZipFile.vt = VT_BSTR;
+	InZipFile.bstrVal = lpZipFile;
+	pISD->lpVtbl->NameSpace(pISD, InZipFile, &pZippedFile);
+	if (!pZippedFile)
+	{
+		pISD->lpVtbl->Release(pISD);
+		return 1;
+	}
+
+
+	OutFolder.vt = VT_BSTR;
+	OutFolder.bstrVal = lpFolder;
+	pISD->lpVtbl->NameSpace(pISD, OutFolder, &pDestination);
+	if (!pDestination)
+	{
+		pZippedFile->lpVtbl->Release(pZippedFile);
+		pISD->lpVtbl->Release(pISD);
+		return 1;
+	}
+
+
+	pZippedFile->lpVtbl->Items(pZippedFile, &pFilesInside);
+	if (!pFilesInside)
+	{
+		pDestination->lpVtbl->Release(pDestination);
+		pZippedFile->lpVtbl->Release(pZippedFile);
+		pISD->lpVtbl->Release(pISD);
+		return 1;
+	}
+
+	pFilesInside->lpVtbl->get_Count(pFilesInside, &FilesCount);
+	if (FilesCount < 1)
+	{
+		pFilesInside->lpVtbl->Release(pFilesInside);
+		pDestination->lpVtbl->Release(pDestination);
+		pZippedFile->lpVtbl->Release(pZippedFile);
+		pISD->lpVtbl->Release(pISD);
+		return 0;
+	}
+
+
+	pFilesInside->lpVtbl->QueryInterface(pFilesInside, &IID_IDispatch, (void**)&pItem);
+
+	Item.vt = VT_DISPATCH;
+	Item.pdispVal = pItem;
+
+	Options.vt = VT_I4;
+	Options.lVal = 1024 | 512 | 16 | 4 ;//http://msdn.microsoft.com/en-us/library/bb787866(VS.85).aspx
+
+	HRESULT retval = pDestination->lpVtbl->CopyHere(pDestination, Item, Options);
+
+
+	pItem->lpVtbl->Release(pItem);
+	pItem = 0L;
+
+	pFilesInside->lpVtbl->Release(pFilesInside);
+	pFilesInside = 0L;
+
+	pDestination->lpVtbl->Release(pDestination);
+	pDestination = 0L;
+
+	pZippedFile->lpVtbl->Release(pZippedFile);
+	pZippedFile = 0L;
+
+	pISD->lpVtbl->Release(pISD);
+	pISD = 0L;
+
+	return retval == 0;
+
+
+}
+
