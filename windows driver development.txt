@@ -1,2 +1,12 @@
 1. Build a driver development environment (install vs2019 ,sdk and wdk )
 https://docs.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk
+
+2. 
+https://docs.microsoft.com/zh-cn/windows-hardware/drivers/develop/
+https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/writing-a-very-small-kmdf--driver
+https://docs.microsoft.com/zh-cn/windows-hardware/drivers/debugger/debug-universal-drivers---step-by-step-lab--echo-kernel-mode-
+https://github.com/Microsoft/Windows-Driver-Frameworks/
+https://github.com/Microsoft/Windows-driver-samples
+
+3.Win10双机调试(Windbg+VMware+Win10LTSC) 
+https://www.cnblogs.com/DarkBright/p/10843698.html
