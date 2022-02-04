@@ -1,0 +1,8 @@
+1. abc-translater
+https://chrome.google.com/webstore/detail/translator/bebmphofpgkhclocdbgomhnjcpelbenh
+
+2. Talen API(http POST GET test)
+https://chrome.google.com/webstore/detail/talend-api-tester-free-ed/aejoelaoggembcahagimdiliamlcdmfm
+
+3. Format trnas
+https://gchq.github.io/CyberChef/
